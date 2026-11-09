@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aura by Paschoal Beauty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FBF8F3;--surf:#F3EADD;--line:#E2D2BD;--ink:#3B3029;--mut:#7A6A5C;--gold:#A9814A;--goldbg:#B38A52;--on:#fff;--busy:#CDBFAF;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1F1A16;--surf:#2A231D;--line:#4A3E33;--ink:#F1E8DB;--mut:#B9A894;--gold:#D2AC72;--goldbg:#C29A5F;--on:#1F1A16;--busy:#4A3E33}}
+:root[data-theme="dark"]{--bg:#1F1A16;--surf:#2A231D;--line:#4A3E33;--ink:#F1E8DB;--mut:#B9A894;--gold:#D2AC72;--goldbg:#C29A5F;--on:#1F1A16;--busy:#4A3E33}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font:300 16px/1.65 Jost,system-ui,sans-serif}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:400;margin:0;line-height:1.1}
+a{color:inherit}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 20px}
+.logo{font-family:"Cormorant Garamond",serif;font-size:24px;text-decoration:none;letter-spacing:.04em}
+nav{display:flex;gap:18px;align-items:center;font-size:14px}nav a{text-decoration:none;color:var(--mut)}
+@media(max-width:560px){nav a{display:none}}
+.lang button{background:none;border:0;color:var(--mut);font:inherit;font-size:13px;padding:6px 5px;cursor:pointer}
+.lang button[aria-pressed=true]{color:var(--gold);border-bottom:1px solid var(--gold)}
+.hero{display:grid;place-items:center;text-align:center;padding:72px 20px 80px;position:relative;overflow:hidden}
+.halo{position:absolute;width:min(560px,120vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,transparent 52%,var(--line) 53%,transparent 54%),radial-gradient(circle,var(--surf) 0,transparent 62%);animation:breathe 7s ease-in-out infinite}
+@keyframes breathe{50%{transform:scale(1.05)}}
+@media(prefers-reduced-motion:reduce){.halo{animation:none}}
+.hero>*:not(.halo){position:relative}
+.hero h1{font-size:clamp(76px,22vw,170px);font-weight:300;letter-spacing:.02em}
+.hero .by{font-family:"Cormorant Garamond",serif;font-size:22px;color:var(--gold);margin:4px 0 22px}
+.hero p{max-width:34ch;margin:0 auto 28px;color:var(--mut)}
+.btn{display:inline-block;background:var(--goldbg);color:var(--on);border:0;padding:13px 28px;font:400 15px Jost,sans-serif;text-decoration:none;cursor:pointer;border-radius:2px}
+.btn.ghost{background:none;color:var(--gold);border:1px solid var(--gold)}
+.btn:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+section{padding:64px 20px;max-width:960px;margin:0 auto}
+section h2{font-size:clamp(34px,6vw,48px);margin-bottom:8px}
+.sub{color:var(--mut);margin:0 0 28px;max-width:60ch}
+.grp{margin:34px 0 8px;font-family:"Cormorant Garamond",serif;font-size:26px;color:var(--gold)}
+.row{display:grid;grid-template-columns:1fr auto auto;gap:6px 18px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line)}
+.row .n{grid-column:1}.row .d{color:var(--mut);font-size:14px;min-width:56px;text-align:right}.row .p{font-family:"Cormorant Garamond",serif;font-size:24px;min-width:48px;text-align:right}
+.row small{grid-column:1/-1;color:var(--mut);font-size:13px;margin-top:-4px}
+.row button{grid-column:1/-1;justify-self:start;background:none;border:0;color:var(--gold);padding:0;cursor:pointer;font:inherit;font-size:14px;text-decoration:underline}
+.band{background:var(--surf);max-width:none}.band>div{max-width:960px;margin:0 auto}
+form{display:grid;gap:16px;max-width:560px}
+label{display:grid;gap:6px;font-size:14px;color:var(--mut)}
+select,input[type=text],input[type=tel],input[type=email],input[type=date]{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);padding:11px 12px;border-radius:2px;width:100%}
+.slots{display:flex;flex-wrap:wrap;gap:8px}
+.slots button{font:inherit;font-size:14px;padding:8px 14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer;border-radius:2px}
+.slots button[aria-pressed=true]{background:var(--goldbg);color:var(--on);border-color:var(--goldbg)}
+.slots button:disabled{color:var(--busy);text-decoration:line-through;cursor:not-allowed}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:13px}.chk input{margin-top:4px}
+.sum{border-left:2px solid var(--gold);padding:4px 14px;font-size:14px;color:var(--mut)}
+.msg{font-size:14px;color:var(--gold);min-height:20px}
+.res{display:grid;gap:12px;margin-top:28px;max-width:560px}
+.card{border:1px solid var(--line);padding:14px 16px;background:var(--bg)}
+.card b{font-weight:500}.tag{float:right;font-size:12px;color:var(--gold);border:1px solid var(--gold);padding:1px 10px;border-radius:99px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:36px}
+.hrs p{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);margin:0;padding:8px 0}
+footer{text-align:center;color:var(--mut);font-size:13px;padding:36px 20px 96px;border-top:1px solid var(--line)}
+#fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:8;background:var(--goldbg);color:var(--on);border:0;border-radius:99px;padding:13px 22px;font:400 15px Jost,sans-serif;cursor:pointer;box-shadow:0 6px 24px rgba(60,40,20,.25)}
+#chat{position:fixed;right:12px;left:12px;bottom:calc(76px + env(safe-area-inset-bottom,0px));max-width:380px;margin-left:auto;z-index:8;background:var(--bg);border:1px solid var(--line);display:none;flex-direction:column;height:min(460px,65vh);box-shadow:0 10px 40px rgba(60,40,20,.25)}
+#chat.open{display:flex}
+#chat h3{font-size:22px;padding:12px 16px;border-bottom:1px solid var(--line)}
+#log{flex:1;overflow-y:auto;padding:14px;display:grid;gap:10px;align-content:start}
+#log div{padding:9px 13px;font-size:14px;max-width:88%;border-radius:2px;background:var(--surf)}
+#log .me{justify-self:end;background:var(--goldbg);color:var(--on)}
+#chat form{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line);max-width:none}
+#chat input{flex:1}#chat .btn{padding:10px 16px}
+</style>
+</head>
+<body>
+<header>
+<a class="logo" href="#top">Aura</a>
+<nav><a href="#servicos" data-i="nav_s"></a><a href="#reservar" data-i="nav_b"></a><a href="#horarios" data-i="nav_h"></a>
+<span class="lang"><button data-l="pt">PT</button><button data-l="es">ES</button><button data-l="en">EN</button></span></nav>
+</header>
+
+<main id="top">
+<div class="hero"><div class="halo" aria-hidden="true"></div>
+<h1>Aura</h1><div class="by">by Paschoal Beauty</div>
+<p data-i="hero"></p>
+<a class="btn" href="#reservar" data-i="cta"></a>
+</div>
+
+<section id="servicos"><h2 data-i="nav_s"></h2><p class="sub" data-i="svc_sub"></p><div id="cat"></div></section>
+
+<div class="band"><section id="reservar" style="max-width:none;padding-left:0;padding-right:0;margin:0"><div style="padding:64px 20px">
+<h2 data-i="nav_b"></h2><p class="sub" data-i="book_sub"></p>
+<form id="bf" autocomplete="off">
+<label><span data-i="f_svc"></span><select id="svc" required></select></label>
+<label><span data-i="f_date"></span><input type="date" id="date" required></label>
+<div><span style="font-size:14px;color:var(--mut)" data-i="f_time"></span><div class="slots" id="slots" style="margin-top:8px"></div></div>
+<input type="hidden" id="name"><input type="hidden" id="tel">
+
+
+<label><span data-i="f_photo"></span><input type="file" id="photo" accept="image/*"></label>
+<label class="chk"><input type="checkbox" id="cons"><span data-i="consent"></span></label>
+<div class="sum" id="sum"></div>
+<button class="btn" type="submit" data-i="send"></button>
+<div class="msg" id="msg" role="status"></div>
+</form>
+<div class="res" id="res"></div>
+</div></section></div>
+
+<section id="wa"><div class="two"><div><h2 data-i="wa_t"></h2><p class="sub" data-i="wa_s"></p></div>
+<div><h2 data-i="pol_t"></h2><p class="sub" data-i="pol_s"></p></div></div></section>
+
+<div class="band"><section id="horarios"><h2 data-i="nav_h"></h2><p class="sub">Gandia, España</p>
+<div class="hrs" style="max-width:420px"><p><span data-i="d1"></span><span>09:00 – 18:00</span></p><p><span data-i="d2"></span><span>09:00 – 14:00</span></p><p><span data-i="d3"></span><span data-i="closed"></span></p></div></section></div>
+</main>
+<footer>© Aura by Paschoal Beauty · Gandia</footer>
+
+<button id="fab" data-i="chat_open"></button>
+<div id="chat" role="dialog" aria-label="Assistente"><h3 data-i="chat_t"></h3><div id="log" aria-live="polite"></div>
+<form id="cf"><input type="text" id="ci" data-ph="chat_ph" aria-label="Mensagem"><button class="btn" data-i="chat_send"></button></form></div>
+
+<script>
+const T={
+pt:{nav_s:"Serviços",nav_b:"Reservar",nav_h:"Horários",cta:"Solicitar marcação",hero:"Estética facial, pestanas, depilação, unhas e sobrancelhas, com atendimento personalizado.",svc_sub:"Preços e durações atuais. Toque em reservar para escolher o horário.",book_sub:"Escolha o serviço e o horário. A profissional aprova o pedido e, depois, envia o link do sinal.",f_svc:"Serviço",f_date:"Data",f_time:"Horário disponível",f_name:"Nome",f_tel:"Telemóvel / WhatsApp",f_mail:"Email",f_photo:"Foto de referência (opcional)",consent:"Autorizo o uso desta fotografia apenas como referência para o meu serviço (RGPD).",send:"Solicitar marcação",sum:(s,d,p)=>`${s.n} · ${d} min · ${s.p} € · Sinal (10%): ${p} €`,pick:"Escolha serviço e data.",noday:"Fechado neste dia. Escolha outra data.",noslot:"Sem horários livres.",need:"Escolha um horário.",needc:"Aceite o consentimento para enviar a foto.",pend:"Pendente de aprovação",pendinfo:"Aguarde a resposta da profissional. Só depois receberá os dados para pagar o sinal por Bizum ou transferência.",ok:"Pedido enviado. A reserva só fica confirmada após aprovação e pagamento do sinal.",mine:"As suas reservas",wa_t:"Fale connosco no WhatsApp",wa_s:"A assistente virtual atende também por WhatsApp Business: serviços, preços, fotos de referência, disponibilidade e pedidos de reserva, ligados à mesma agenda deste site.",pol_t:"Sinal e alterações",pol_s:"Sinal de 10% do serviço, por Bizum ou transferência bancária. Pode alterar data ou horário sem perder o sinal, com pelo menos 48 horas de antecedência.",d1:"Segunda a sexta",d2:"Sábado",d3:"Domingo",closed:"Fechado",chat_open:"Assistente",chat_t:"Assistente Aura",chat_ph:"Escreva a sua pergunta",chat_send:"Enviar",min:"min",book:"Reservar",hi:"Olá! Sou a assistente da Aura. Pergunte-me por serviços, preços ou horários.",hrs:"Abrimos de segunda a sexta, 09:00–18:00, e ao sábado, 09:00–14:00. Domingo fechado.",bookr:"Posso ajudar: escolha o serviço e o horário no formulário de reserva. A profissional aprova e depois recebe o link do sinal.",lash:"Temos extensões (45 €, 120 min), relleno (40 €, 90 min) e lifting de pestanas (29 €, 60 min). Pode enviar uma foto de referência no formulário.",price:(s)=>`${s.n}: ${s.p} €, ${s.m} min. Sinal de ${(s.p*.1).toFixed(2).replace(".00","")} €.`,human:"Não tenho essa informação. Vou encaminhar para uma pessoa da equipa.",micro:"A sessão inicial de microblading dura 120 min. A profissional decide depois se é preciso um repaso."},
+es:{nav_s:"Servicios",nav_b:"Reservar",nav_h:"Horario",cta:"Solicitar cita",hero:"Estética facial, pestañas, depilación, uñas y cejas, con atención personalizada.",svc_sub:"Precios y duraciones actuales. Pulsa reservar para elegir horario.",book_sub:"Elige el servicio y la hora. La profesional aprueba la solicitud y después envía el enlace del depósito.",f_svc:"Servicio",f_date:"Fecha",f_time:"Hora disponible",f_name:"Nombre",f_tel:"Teléfono / WhatsApp",f_mail:"Email",f_photo:"Foto de referencia (opcional)",consent:"Autorizo el uso de esta foto solo como referencia para mi servicio (RGPD).",send:"Solicitar cita",sum:(s,d,p)=>`${s.n} · ${d} min · ${s.p} € · Depósito (10%): ${p} €`,pick:"Elige servicio y fecha.",noday:"Cerrado ese día. Elige otra fecha.",noslot:"Sin horarios libres.",need:"Elige una hora.",needc:"Acepta el consentimiento para enviar la foto.",pend:"Pendiente de aprobación",pendinfo:"Espera la respuesta de la profesional. Después recibirás los datos para pagar el depósito por Bizum o transferencia.",ok:"Solicitud enviada. La cita se confirma tras la aprobación y el pago del depósito.",mine:"Tus reservas",wa_t:"Escríbenos por WhatsApp",wa_s:"La asistente virtual también atiende por WhatsApp Business: servicios, precios, fotos de referencia, disponibilidad y solicitudes de cita, conectadas a la misma agenda de esta web.",pol_t:"Depósito y cambios",pol_s:"Depósito del 10% del servicio, por Bizum o transferencia. Puedes cambiar fecha u hora sin perder el depósito, con al menos 48 horas de antelación.",d1:"Lunes a viernes",d2:"Sábado",d3:"Domingo",closed:"Cerrado",chat_open:"Asistente",chat_t:"Asistente Aura",chat_ph:"Escribe tu pregunta",chat_send:"Enviar",min:"min",book:"Reservar",hi:"¡Hola! Soy la asistente de Aura. Pregúntame por servicios, precios u horarios.",hrs:"Abrimos de lunes a viernes, 09:00–18:00, y sábados, 09:00–14:00. Domingo cerrado.",bookr:"Te ayudo: elige servicio y hora en el formulario. La profesional aprueba y luego recibes el enlace del depósito.",lash:"Tenemos extensiones (45 €, 120 min), relleno (40 €, 90 min) y lifting de pestañas (29 €, 60 min). Puedes subir una foto de referencia en el formulario.",price:(s)=>`${s.n}: ${s.p} €, ${s.m} min. Depósito de ${(s.p*.1).toFixed(2).replace(".00","")} €.`,human:"No tengo esa información. La paso a una persona del equipo.",micro:"La sesión inicial de microblading dura 120 min. La profesional decide después si hace falta un repaso."},
+en:{nav_s:"Services",nav_b:"Book",nav_h:"Hours",cta:"Request a booking",hero:"Facial care, lashes, waxing, nails and brows, with personal attention.",svc_sub:"Current prices and durations. Tap book to choose a time.",book_sub:"Choose a service and time. The professional approves your request, then sends the deposit link.",f_svc:"Service",f_date:"Date",f_time:"Available time",f_name:"Name",f_tel:"Phone / WhatsApp",f_mail:"Email",f_photo:"Reference photo (optional)",consent:"I allow this photo to be used only as a reference for my service (GDPR).",send:"Request booking",sum:(s,d,p)=>`${s.n} · ${d} min · €${s.p} · Deposit (10%): €${p}`,pick:"Choose a service and date.",noday:"Closed that day. Choose another date.",noslot:"No free times.",need:"Choose a time.",needc:"Accept the consent to send the photo.",pend:"Awaiting approval",pendinfo:"Wait for the professional's reply. Then you will get the details to pay the deposit by Bizum or bank transfer.",ok:"Request sent. The booking is confirmed only after approval and deposit payment.",mine:"Your bookings",wa_t:"Chat with us on WhatsApp",wa_s:"The virtual assistant also answers on WhatsApp Business: services, prices, reference photos, availability and booking requests, linked to the same calendar as this site.",pol_t:"Deposit and changes",pol_s:"10% deposit of the service price, by Bizum or bank transfer. You can change date or time without losing the deposit, with at least 48 hours' notice.",d1:"Monday to Friday",d2:"Saturday",d3:"Sunday",closed:"Closed",chat_open:"Assistant",chat_t:"Aura assistant",chat_ph:"Type your question",chat_send:"Send",min:"min",book:"Book",hi:"Hi! I'm Aura's assistant. Ask me about services, prices or opening hours.",hrs:"We're open Monday to Friday, 09:00–18:00, and Saturday, 09:00–14:00. Closed on Sunday.",bookr:"Happy to help: pick a service and time in the booking form. The professional approves, then you get the deposit link.",lash:"We offer extensions (€45, 120 min), refill (€40, 90 min) and lash lift (€29, 60 min). You can add a reference photo in the form.",price:(s)=>`${s.n}: €${s.p}, ${s.m} min. Deposit €${(s.p*.1).toFixed(2).replace(".00","")}.`,human:"I don't have that information. I'll pass you to a team member.",micro:"The first microblading session takes 120 min. The professional decides afterwards if a touch-up is needed."}};
+const G={pt:["Bruna Paschoal · rosto, pestanas e massagem","Bruna Paschoal · depilação feminina","Lutty · unhas e sobrancelhas"],es:["Bruna Paschoal · facial, pestañas y masaje","Bruna Paschoal · depilación femenina","Lutty · uñas y cejas"],en:["Bruna Paschoal · face, lashes and massage","Bruna Paschoal · women's waxing","Lutty · nails and brows"]};
+const S=[
+["Drenaje linfático",40,60,0],["Limpieza de piel Detox",39,60,0],["Dermapen facial",59,60,0],["Radiofrecuencia facial",49,45,0],["Extensiones de pestañas",45,120,0],["Relleno de pestañas",40,90,0],["Masaje relajante",45,60,0],["Lifting de pestañas",29,60,0],
+["Ingles integral",18,30,1],["Piernas enteras",15,30,1],["Ingles",8,15,1],["1/2 piernas",10,20,1],["Brazos",8,30,1],["Axilas",8,15,1],["Depilación completa",38,90,1,"pernas + ingles + axilas + brazos"],
+["Manicure básica",15,45,2],["Semipermanente",23,45,2],["Relleno gel",30,90,2],["Gel extensión",35,120,2],["Pedicura básica",20,45,2],["Pedicura + semipermanente",30,60,2],["Pedicura + uña encarnada",45,60,2],["Cejas hilo",15,15,2],["Cejas pinza",10,15,2],["Laminado cejas",40,30,2],["Microblading + repaso",180,120,2,"micro"]
+].map((a,i)=>({i,n:a[0],p:a[1],m:a[2],g:a[3],x:a[4]}));
+const H={0:null,1:[9,18],2:[9,18],3:[9,18],4:[9,18],5:[9,18],6:[9,14]};
+let L="es";
+let slot=null;const R=[];
+const $=id=>document.getElementById(id),t=k=>T[L][k];
+const dep=s=>(s.p*.1).toFixed(2).replace(".00","");
+const hm=m=>String(Math.floor(m/60)).padStart(2,"0")+":"+String(m%60).padStart(2,"0");
+function render(){
+document.documentElement.lang=L;
+document.querySelectorAll("[data-i]").forEach(e=>{const v=t(e.dataset.i);if(typeof v==="string")e.textContent=v});
+$("ci").placeholder=t("chat_ph");
+document.querySelectorAll(".lang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===L));
+let h="";[0,1,2].forEach(g=>{h+=`<div class="grp">${G[L][g]}</div>`;S.filter(s=>s.g===g).forEach(s=>{
+const note=s.x==="micro"?t("micro"):(s.x?(L==="pt"?"Inclui: ":L==="es"?"Incluye: ":"Includes: ")+s.x:"");
+h+=`<div class="row"><span class="n">${s.n}</span><span class="d">${s.m} ${t("min")}</span><span class="p">${s.p} €</span>${note?`<small>${note}</small>`:""}<button data-b="${s.i}">${t("book")}</button></div>`})});
+$("cat").innerHTML=h;
+const cur=$("svc").value;
+$("svc").innerHTML=S.map(s=>`<option value="${s.i}">${s.n} · ${s.p} €</option>`).join("");
+if(cur)$("svc").value=cur;
+slots();list();
+}
+function busy(d,s,m){let x=0;const k=d+s.g+m;for(const c of k)x=(x*31+c.charCodeAt(0))%97;return x%5===0}
+function slots(){
+const s=S[+$("svc").value],d=$("date").value;slot=null;
+if(!d){$("slots").innerHTML=`<span class="sub" style="margin:0">${t("pick")}</span>`;$("sum").textContent="";return}
+const dt=new Date(d+"T12:00"),w=dt.getDay(),hr=H[w];
+$("sum").textContent=t("sum")(s,s.m,dep(s));
+if(!hr){$("slots").innerHTML=`<span>${t("noday")}</span>`;return}
+const now=new Date(),today=d===now.toISOString().slice(0,10),nm=now.getHours()*60+now.getMinutes();
+let h="",n=0;
+for(let m=hr[0]*60;m+s.m<=hr[1]*60;m+=30){const off=busy(d,s,m)||(today&&m<=nm);if(!off)n++;
+h+=`<button type="button" data-m="${m}" aria-pressed="false" ${off?"disabled":""}>${hm(m)}</button>`}
+$("slots").innerHTML=n?h:`<span>${t("noslot")}</span>`;
+}
+function wa(r){return "https://wa.me/34746071818?text="+encodeURIComponent(`Aura · ${r.s.n} · ${["Bruna","Bruna","Lutty"][r.s.g]} · ${r.d} ${hm(r.m)} · ${r.n} · ${r.tel} · ${r.mail}`)}
+function list(){
+$("res").innerHTML=R.length?`<h3 style="font-size:26px">${t("mine")}</h3>`+R.map(r=>`<div class="card"><span class="tag">${t("pend")}</span><b>${r.s.n}</b><br>${r.d} · ${hm(r.m)} · ${r.s.m} ${t("min")}<br><small style="color:var(--mut)">${t("pendinfo")}</small><br><a class="btn ghost" style="margin-top:10px;padding:8px 16px" href="${wa(r)}" target="_blank" rel="noopener">${({pt:"Enviar pedido por WhatsApp",es:"Enviar solicitud por WhatsApp",en:"Send request via WhatsApp"})[L]}</a></div>`).join(""):"";
+}
+document.querySelectorAll(".lang button").forEach(b=>b.onclick=()=>{L=b.dataset.l;render()});
+$("cat").onclick=e=>{const b=e.target.closest("[data-b]");if(!b)return;$("svc").value=b.dataset.b;slots();$("reservar").scrollIntoView()};
+$("svc").onchange=slots;$("date").onchange=slots;
+$("slots").onclick=e=>{const b=e.target.closest("button");if(!b||b.disabled)return;slot=+b.dataset.m;
+$("slots").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b))};
+$("bf").onsubmit=e=>{e.preventDefault();
+if(slot===null){$("msg").textContent=t("need");return}
+if($("photo").files.length&&!$("cons").checked){$("msg").textContent=t("needc");return}
+R.unshift({s:S[+$("svc").value],d:$("date").value,m:slot,n:$("name").value,tel:$("tel").value,mail:$("mail").value});
+const b=$("slots").querySelector(`[data-m="${slot}"]`);if(b)b.disabled=true;slot=null;
+$("msg").textContent=t("ok");list();$("res").scrollIntoView({block:"nearest"});
+};
+const dd=new Date();$("date").min=dd.toISOString().slice(0,10);
+$("fab").onclick=()=>{const c=$("chat");c.classList.toggle("open");if(c.classList.contains("open")&&!$("log").children.length)say(t("hi"))};
+function say(x,me){const d=document.createElement("div");d.textContent=x;if(me)d.className="me";$("log").append(d);$("log").scrollTop=1e9}
+const norm=x=>x.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+function reply(q){
+q=norm(q);
+if(/micro/.test(q))return t("micro");
+if(/pesta|lash|eyelash|cilios/.test(q)&&!/preco|precio|price|cuest|custa/.test(q))return t("lash");
+const hit=S.filter(s=>{const n=norm(s.n);return n.split(/[ +\/]/).some(w=>w.length>4&&q.includes(w))||q.includes(n)}).sort((a,b)=>b.n.length-a.n.length)[0];
+if(hit&&/preco|precio|price|cuest|custa|cost|quanto|cuanto|how much|duracao|duracion|long/.test(q))return t("price")(hit);
+if(/horari|hora|abre|abr[ie]|open|hours|schedule|cuando|quando|when/.test(q))return t("hrs");
+if(/marcar|reserv|cita|book|appoint|agendar/.test(q))return t("bookr");
+if(hit)return t("price")(hit);
+return t("human");
+}
+$("cf").onsubmit=e=>{e.preventDefault();const v=$("ci").value.trim();if(!v)return;say(v,1);$("ci").value="";setTimeout(()=>say(reply(v)),350)};
+/* ===== Contas, agenda real por profissional, painel da equipa (DEMO: dados no navegador) ===== */
+document.head.insertAdjacentHTML("beforeend","<style>input[type=email],input[type=password],input[type=time]{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);padding:11px 12px;border-radius:2px;width:100%}fieldset label{margin:4px 0}.tabs{display:flex;gap:18px;margin:18px 0}.tabs button{background:none;border:0;border-bottom:1px solid transparent;font:inherit;color:var(--mut);cursor:pointer;padding:4px 0}.tabs button[aria-pressed=true]{color:var(--gold);border-color:var(--gold)}#staff{max-width:960px;margin:0 auto;padding:40px 20px;border-bottom:1px solid var(--line)}#staff .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:28px;margin-top:24px}#staff form{max-width:none}#staff .btn{padding:8px 16px;font-size:14px;margin:8px 8px 0 0}.warn{color:var(--gold);font-size:14px}</style>");
+const u=(es,pt,en)=>({es,pt,en})[L];
+const SITE="https://claude.ai/artifact/2UhHPwZ8QMGtSTBdnwTA8T";
+const STAFF={"aura.paschoalbeauty@icloud.com":["bruna","lutty"],"lutyelen@icloud.com":["lutty"]};
+const PR=["bruna","bruna","lutty"],PN={bruna:"Bruna",lutty:"Lutty"};
+const ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
+let US=ld("au_u",{}),BK=ld("au_b",[]),BL=ld("au_l",[]),ME=ld("au_s",null),AM="in";
+const save=()=>{try{localStorage.setItem("au_u",JSON.stringify(US));localStorage.setItem("au_b",JSON.stringify(BK));localStorage.setItem("au_l",JSON.stringify(BL));localStorage.setItem("au_s",JSON.stringify(ME))}catch(e){}};
+const hash=async p=>[...new Uint8Array(await crypto.subtle.digest("SHA-256",new TextEncoder().encode("aura:"+p)))].map(b=>b.toString(16).padStart(2,"0")).join("");
+const mm=v=>{const[a,b]=v.split(":");return +a*60+ +b};
+const stl=s=>({pending:u("Pendiente de confirmación","Pendente de confirmação","Awaiting confirmation"),approved:u("Aprobada · falta el depósito","Aprovada · falta o sinal","Approved · deposit due"),paid:u("Confirmada","Confirmada","Confirmed"),cancelled:u("Cancelada","Cancelada","Cancelled")})[s];
+const clash=(p,d,m,dur)=>BK.some(b=>b.p===p&&b.d===d&&b.st!=="cancelled"&&m<b.m+b.dur&&b.m<m+dur)||BL.some(b=>b.p===p&&b.d===d&&m<b.to&&b.from<m+dur);
+function busy(d,s,m){return clash(PR[s.g],d,m,s.m)}
+function chk(p,d,m,dur){const hr=H[new Date(d+"T12:00").getDay()];
+if(!hr||m<hr[0]*60||m+dur>hr[1]*60)return u("Fuera del horario del salón","Fora do horário do salão","Outside salon hours");
+return clash(p,d,m,dur)?u("Horario ocupado o bloqueado","Horário ocupado ou bloqueado","Time taken or blocked"):""}
+const prefHtml=(id,v)=>`<fieldset id="${id}" style="border:1px solid var(--line);padding:10px 14px;margin:0"><legend style="font-size:14px;color:var(--mut)">${u("¿Prefieres que te contactemos por email o por WhatsApp?","Prefere ser contactada por email ou WhatsApp?","Do you prefer email or WhatsApp contact?")}</legend><label class="chk"><input type="radio" name="${id}" value="wa" ${v!=="email"?"checked":""}><span>WhatsApp</span></label><label class="chk"><input type="radio" name="${id}" value="email" ${v==="email"?"checked":""}><span>Email</span></label></fieldset>`;
+const gp=id=>(document.querySelector(`input[name="${id}"]:checked`)||{}).value||"wa";
+function wa(b){const s=S[b.i];return "https://wa.me/34746071818?text="+encodeURIComponent(`Aura · ${s.n} · ${PN[b.p]} · ${b.d} ${hm(b.m)} · ${b.n} · ${b.tel} · ${b.email} · ${u("contacto","contacto","contact")}: ${b.pref==="email"?"email":"WhatsApp"}`)}
+
+/* --- Entrar / crear cuenta --- */
+document.body.insertAdjacentHTML("beforeend",`<div id="auth" style="position:fixed;inset:0;z-index:30;background:var(--bg);overflow:auto;display:none"><div style="max-width:420px;margin:0 auto;padding:48px 20px"><h1 style="font-size:84px;font-weight:300;text-align:center">Aura</h1><div style="text-align:center;font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold)">by Paschoal Beauty</div><div class="tabs" id="atabs"></div><form id="af"></form></div></div>`);
+$("atabs").onclick=e=>{const b=e.target.closest("button");if(b){AM=b.dataset.m;rAuth()}};
+function rAuth(){const up=AM==="up";
+$("atabs").innerHTML=`<button data-m="in" aria-pressed="${!up}">${u("Entrar","Entrar","Log in")}</button><button data-m="up" aria-pressed="${up}">${u("Crear cuenta","Criar conta","Create account")}</button>`;
+$("af").innerHTML=`<label>Email<input type="email" id="ae" required autocomplete="email"></label><label>${u("Contraseña (mín. 8 caracteres)","Senha (mín. 8 caracteres)","Password (min. 8 characters)")}<input type="password" id="ap" required minlength="8" autocomplete="${up?"new-password":"current-password"}"></label>`+(up?`<label>${u("Nombre","Nome","Name")}<input type="text" id="an" required></label><label>${u("Teléfono / WhatsApp","Telemóvel / WhatsApp","Mobile / WhatsApp")}<input type="tel" id="at" required></label>${prefHtml("ap2")}`:"")+`<button class="btn">${up?u("Crear cuenta","Criar conta","Create account"):u("Entrar","Entrar","Log in")}</button><div class="msg" id="aerr"></div>`}
+$("af").onsubmit=async e=>{e.preventDefault();const em=$("ae").value.trim().toLowerCase(),h=await hash($("ap").value),er=$("aerr");
+if(AM==="up"){if(US[em]){er.textContent=u("Ya existe una cuenta con ese email.","Já existe uma conta com esse email.","An account with this email already exists.");return}
+US[em]={h,name:$("an").value.trim(),tel:$("at").value.trim(),pref:gp("ap2")}}
+else if(!US[em]||US[em].h!==h){er.textContent=u("Email o contraseña incorrectos.","Email ou senha incorretos.","Wrong email or password.");return}
+ME=em;save();gate()};
+document.querySelector("nav").insertAdjacentHTML("beforeend",'<span class="lang"><button id="lo"></button></span>');
+$("lo").onclick=()=>{ME=null;save();gate()};
+$("sum").insertAdjacentHTML("beforebegin",'<div id="bp"></div>');
+function rBp(){const a=ME&&US[ME];$("bp").innerHTML=a?`<div class="sum">${u("Reservas como","Reserva como","Booking as")}: <b>${a.name}</b> · ${a.tel} · ${ME}<br>${u("Contacto preferido","Contacto preferido","Preferred contact")}: ${a.pref==="email"?"Email":"WhatsApp"}</div>`:""}
+function gate(){if(ME&&!US[ME])ME=null;$("auth").style.display=ME?"none":"block";
+if(ME){const a=US[ME];$("name").value=a.name||"";$("tel").value=a.tel||"";rBp(a.pref)}rAll()}
+
+/* --- Reserva da clienta --- */
+$("bf").onsubmit=e=>{e.preventDefault();
+if(slot===null){$("msg").textContent=t("need");return}
+if($("photo").files.length&&!$("cons").checked){$("msg").textContent=t("needc");return}
+const s=S[+$("svc").value],d=$("date").value;
+if(clash(PR[s.g],d,slot,s.m)){$("msg").textContent=u("Ese horario acaba de ocuparse. Elige otro.","Esse horário acabou de ser ocupado. Escolha outro.","That time was just taken. Choose another.");slots();return}
+const b={id:Date.now().toString(36),i:s.i,p:PR[s.g],d,m:slot,dur:s.m,n:$("name").value.trim(),tel:$("tel").value.trim(),email:ME,pref:US[ME].pref,src:"online",st:"pending"};
+BK.push(b);Object.assign(US[ME],{name:b.n,tel:b.tel,pref:b.pref});save();slot=null;
+$("msg").textContent=u("Solicitud enviada. No queda reservada hasta que la profesional la confirme desde el WhatsApp 746 07 18 18.","Pedido enviado. Não fica reservado até a profissional confirmar pelo WhatsApp 746 07 18 18.","Request sent. It is not booked until the professional confirms from WhatsApp 746 07 18 18.");rAll()};
+function list(){const my=BK.filter(b=>b.email===ME).sort((a,b)=>a.d+a.m<b.d+b.m?1:-1);
+const nt=b=>({pending:u("Envía la solicitud al WhatsApp 746 07 18 18. Tu cita no queda reservada hasta recibir su confirmación.","Envie o pedido ao WhatsApp 746 07 18 18. A marcação só fica reservada após a confirmação.","Send the request to WhatsApp 746 07 18 18. Your booking is only reserved after confirmation."),approved:u(`Falta el depósito de ${dep(S[b.i])} € por Bizum o transferencia.`,`Falta o sinal de ${dep(S[b.i])} € por Bizum ou transferência.`,`Deposit of €${dep(S[b.i])} due by Bizum or bank transfer.`),paid:u("Reserva confirmada.","Reserva confirmada.","Booking confirmed."),cancelled:u("Cancelada. Puedes reservar otra fecha arriba.","Cancelada. Pode remarcar acima.","Cancelled. You can rebook above.")})[b.st];
+$("res").innerHTML=my.length?`<h3 style="font-size:26px">${t("mine")}</h3>`+my.map(b=>`<div class="card"><span class="tag">${stl(b.st)}</span><b>${S[b.i].n}</b> · ${PN[b.p]}<br>${b.d} · ${hm(b.m)} · ${b.dur} ${t("min")}<br><small style="color:var(--mut)">${nt(b)}</small>${b.st==="pending"?`<br><a class="btn ghost" style="margin-top:10px;padding:8px 16px" href="${wa(b)}" target="_blank" rel="noopener">${u("Enviar solicitud por WhatsApp","Enviar pedido por WhatsApp","Send request via WhatsApp")}</a>`:""}</div>`).join(""):""}
+
+/* --- Panel de Bruna y Lutty --- */
+function rStaff(){const pr=ME&&STAFF[ME];let el=$("staff");
+if(!pr){if(el)el.style.display="none";return}
+if(!el){el=document.createElement("section");el.id="staff";document.querySelector(".hero").before(el);
+el.onclick=ev=>{const b=ev.target.closest("[data-a]");if(!b)return;const a=b.dataset.a,x=BK.find(k=>k.id===b.dataset.i);
+if(a==="ap")x.st="approved";if(a==="pd")x.st="paid";if(a==="cn"){x.st="cancelled";el.dataset.c=x.id}
+if(a==="rb")BL.splice(+b.dataset.i,1);if(a==="xc")el.dataset.c="";save();rAll()};
+el.onchange=ev=>{const i=ev.target.id;if(i==="sp")el.dataset.p=ev.target.value;if(i==="sd")el.dataset.d=ev.target.value;if(i==="sp"||i==="sd")rStaff()};
+el.onsubmit=ev=>{ev.preventDefault();const f=ev.target,p=el.dataset.p,v=n=>f.elements[n].value;
+if(f.id==="sf1"){const s=S[+v("sv")],m=mm(v("tm")),er=chk(p,v("dt"),m,s.m);
+if(er){$("e1").textContent=er;return}
+BK.push({id:Date.now().toString(36),i:s.i,p,d:v("dt"),m,dur:s.m,n:v("nm"),tel:v("tl"),email:v("em").trim().toLowerCase(),pref:"wa",src:v("sr"),st:"paid"});el.dataset.w=""}
+else{const a=mm(v("fr")),b=mm(v("to"));if(!(b>a)){$("e2").textContent=u("La hora final debe ser posterior.","A hora final deve ser posterior.","End time must be later.");return}
+BL.push({p,d:v("dt"),from:a,to:b,why:v("wy")});el.dataset.w=BK.filter(k=>k.p===p&&k.d===v("dt")&&k.st!=="cancelled"&&k.m<b&&a<k.m+k.dur).length}
+save();rAll()}}
+el.style.display="";
+const cur=pr.includes(el.dataset.p)?el.dataset.p:pr[0];el.dataset.p=cur;
+const day=el.dataset.d||(el.dataset.d=new Date().toISOString().slice(0,10));
+const bs=BK.filter(b=>b.p===cur&&b.d===day).sort((a,b)=>a.m-b.m),c=BK.find(b=>b.id===el.dataset.c);
+const dg=x=>x.replace(/\D/g,"").replace(/^(\d{9})$/,"34$1");
+let h=`<h2>${u("Panel de agenda","Painel da agenda","Agenda panel")}</h2><div style="display:flex;gap:12px;flex-wrap:wrap;margin:16px 0;align-items:center">${pr.length>1?`<select id="sp" style="width:auto">${pr.map(x=>`<option value="${x}" ${x===cur?"selected":""}>${PN[x]}</option>`).join("")}</select>`:`<b style="font-family:'Cormorant Garamond',serif;font-size:26px">${PN[cur]}</b>`}<input type="date" id="sd" value="${day}" style="width:auto"></div>`;
+if(c){const s=S[c.i],tx=u(`Hola ${c.n}, tu cita de ${s.n} del ${c.d} a las ${hm(c.m)} ha sido cancelada por un imprevisto. Puedes reservar otra fecha aquí: ${SITE}`,`Olá ${c.n}, a sua marcação de ${s.n} em ${c.d} às ${hm(c.m)} foi cancelada por um imprevisto. Pode remarcar aqui: ${SITE}`,`Hi ${c.n}, your ${s.n} appointment on ${c.d} at ${hm(c.m)} was cancelled due to an unforeseen issue. Rebook here: ${SITE}`);
+h+=`<div class="card" style="margin-bottom:16px"><b>${u("Cita cancelada. Avisa a la clienta:","Marcação cancelada. Avise a cliente:","Booking cancelled. Notify the client:")}</b><br><small>${tx}</small><br><a class="btn" target="_blank" rel="noopener" href="https://wa.me/${dg(c.tel)}?text=${encodeURIComponent(tx)}">WhatsApp</a>${c.email?`<a class="btn" href="mailto:${c.email}?subject=Aura&body=${encodeURIComponent(tx)}">Email</a>`:""}<button class="btn ghost" data-a="xc">OK</button></div>`}
+h+=bs.length?bs.map(b=>`<div class="card" style="margin-bottom:10px"><span class="tag">${stl(b.st)}</span><b>${hm(b.m)}</b> · ${S[b.i].n} · ${b.dur} ${t("min")}<br>${b.n} · ${b.tel}${b.email?" · "+b.email:""}<br><small style="color:var(--mut)">${b.src} · ${u("contacto","contacto","contact")}: ${b.pref==="email"?"Email":"WhatsApp"}</small>${b.st==="cancelled"?"":`<br>${b.st==="pending"?`<button class="btn" data-a="ap" data-i="${b.id}">${u("Aprobar","Aprovar","Approve")}</button>`:""}${b.st==="approved"?`<button class="btn" data-a="pd" data-i="${b.id}">${u("Depósito pagado","Sinal pago","Deposit paid")}</button>`:""}<button class="btn ghost" data-a="cn" data-i="${b.id}">${u("Cancelar","Desmarcar","Cancel")}</button>`}</div>`).join(""):`<p class="sub">${u("Sin citas este día.","Sem marcações neste dia.","No bookings this day.")}</p>`;
+const opts=S.filter(s=>PR[s.g]===cur).map(s=>`<option value="${s.i}">${s.n}</option>`).join("");
+const bl=BL.map((b,i)=>({...b,i})).filter(b=>b.p===cur&&b.d>=day).sort((a,b)=>a.d+a.from<b.d+b.from?-1:1);
+h+=`<div class="g"><form id="sf1"><h3>${u("Añadir cita (presencial u otro canal)","Adicionar marcação (presencial ou outro canal)","Add booking (in person or other channel)")}</h3><select name="sv">${opts}</select><input type="date" name="dt" value="${day}" required><input type="time" name="tm" step="900" required><input type="text" name="nm" placeholder="${u("Nombre","Nome","Name")}" required><input type="tel" name="tl" placeholder="${u("Teléfono","Telemóvel","Mobile")}" required><input type="email" name="em" placeholder="Email (${u("opcional","opcional","optional")})"><select name="sr"><option value="presencial">${u("Presencial","Presencial","In person")}</option><option value="whatsapp">WhatsApp</option><option value="instagram">Instagram</option><option value="telefono">${u("Teléfono","Telefone","Phone")}</option></select><button class="btn">${u("Añadir","Adicionar","Add")}</button><div class="msg" id="e1"></div></form>`
++`<form id="sf2"><h3>${u("Bloquear día u hora","Bloquear dia ou hora","Block a day or time")}</h3><input type="date" name="dt" value="${day}" required><input type="time" name="fr" value="09:00" required><input type="time" name="to" value="18:00" required><input type="text" name="wy" placeholder="${u("Motivo (opcional)","Motivo (opcional)","Reason (optional)")}"><button class="btn">${u("Bloquear","Bloquear","Block")}</button><div class="msg" id="e2"></div>${el.dataset.w>0?`<div class="warn">${u(`Hay ${el.dataset.w} cita(s) en ese rango: cancélalas para avisar a las clientas.`,`Há ${el.dataset.w} marcação(ões) nesse intervalo: desmarque para avisar as clientes.`,`${el.dataset.w} booking(s) in that range: cancel them to notify clients.`)}</div>`:""}${bl.map(b=>`<div class="card">${b.d} ${hm(b.from)}–${hm(b.to)} ${b.why||""} <button class="btn ghost" type="button" data-a="rb" data-i="${b.i}">${u("Quitar","Remover","Remove")}</button></div>`).join("")}</form></div>`;
+el.innerHTML=h}
+
+/* --- Ligação ao render --- */
+function rAll(){slots();list();rStaff()}
+function r2(){rAuth();$("lo").textContent=u("Salir","Sair","Log out");rBp();rAll()}
+const r0=render;render=function(){r0();r2()};
+
+/* ===== Assistente com IA (Claude via capacidade "sample"; sem ela usa respostas por regras) ===== */
+const DISC=/descuent|desconto|paquete|pacote|\bpack|oferta|promo|discount|bundle|package|\bdeal|offer|combo|rebaja|cupon|coupon/;
+const HI=[];let AIB=false;
+const INSTR=()=>`Eres la asistente virtual de Aura by Paschoal Beauty, salón de belleza en Gandia (España). Responde como una recepcionista experta: cálida, clara y breve (máximo 4 frases), en texto plano sin Markdown y en el idioma del último mensaje de la clienta (si no está claro, usa ${({es:"español",pt:"portugués",en:"inglés"})[L]}).
+Puedes explicar qué es cada tratamiento, en qué consiste, para qué sirve, diferencias entre técnicas y cuidados generales de estética y bienestar (por ejemplo qué es un drenaje linfático). Si te preguntan algo ajeno a belleza, estética y bienestar, indica amablemente que solo puedes ayudar con eso.
+Para precios, duraciones, servicios y profesionales usa SOLO estos datos y nunca inventes precios, servicios, resultados ni disponibilidad: ${S.map(s=>`${s.n} (${PN[PR[s.g]]}) ${s.p}€ ${s.m}min`).join("; ")}.
+Datos del salón: horario lunes a viernes 09:00-18:00, sábado 09:00-14:00, domingo cerrado. Depósito del 10% por Bizum o transferencia. La reserva solo queda confirmada tras la aprobación de la profesional y el pago del depósito. Se puede cambiar fecha u hora sin perder el depósito con al menos 48 horas de antelación. Para reservar, indica que use el formulario de reserva de esta página. La depilación completa incluye piernas, ingles, axilas y brazos. En microblading la sesión inicial dura 120 min y la profesional decide después si hace falta un repaso.
+Si preguntan por paquetes, descuentos, ofertas o precios combinados, responde solo que contacten con el 746 07 18 18.
+No des diagnósticos ni consejo médico: ante embarazo, enfermedades, medicación o dudas de salud, recomienda consultar a un profesional sanitario. Si no sabes algo, dilo y ofrece el contacto 746 07 18 18.`;
+$("cf").onsubmit=async e=>{e.preventDefault();const v=$("ci").value.trim();if(!v||AIB)return;say(v,1);$("ci").value="";
+if(DISC.test(norm(v))){say(u("En caso de consultas sobre paquetes, descuentos u ofertas, contacta con el 746 07 18 18.","Em caso de dúvidas sobre pacotes, descontos ou ofertas, contacte o 746 07 18 18.","For questions about packages, discounts or offers, please contact 746 07 18 18."));return}
+HI.push({r:"u",t:v});AIB=true;
+const d=document.createElement("div");d.textContent="…";$("log").append(d);$("log").scrollTop=1e9;
+let out="";
+try{const sm=window.claude&&await window.claude.use("sample");
+if(sm){const tx=HI.slice(-8).map(m=>(m.r==="u"?"Clienta: ":"Asistente: ")+m.t).join("\n");
+const r=await sm(INSTR()+"\n\nConversación:\n"+tx+"\nAsistente:",{cache:false,onText:x=>{d.textContent=x.text||"…";$("log").scrollTop=1e9}});out=(r.text||"").trim()}}catch(err){out=""}
+if(!out)out=reply(v);
+d.textContent=out;HI.push({r:"a",t:out});AIB=false;$("log").scrollTop=1e9};
+
+/* ===== IA propia de Aura: conocimiento experto incluido en la web (sin servidor ni servicios externos) ===== */
+document.head.insertAdjacentHTML("beforeend","<style>#log div{white-space:pre-wrap}</style>");
+const KB=[
+{x:1,s:[17,18],k:/gel|(extension|extens\w*).*(u[nñ]a|unha|nail)|(u[nñ]a|unha|nail).*(extension|extens\w*)/,
+es:"El gel en uñas es una base resistente: la extensión alarga la uña con gel y el relleno repone la zona que ha crecido. Dura más que un esmalte normal y se mantiene con rellenos periódicos.",
+pt:"O gel nas unhas é uma base resistente: a extensão alonga a unha com gel e o preenchimento repõe a zona que cresceu. Dura mais do que um verniz normal e mantém-se com preenchimentos periódicos.",
+en:"Gel nails are a strong base: the extension lengthens the nail with gel and the refill covers the new growth. It lasts longer than regular polish and is kept up with regular refills."},
+{x:1,s:[4],k:/(extension|extens\w*|alongamento).*(pesta|lash|cilio)|(pesta|lash|cilio).*(extension|extens\w*|alongamento)/,
+es:"Las extensiones de pestañas se aplican pelo a pelo para dar longitud y densidad. Duran unas semanas y se mantienen con rellenos; evita mojarlas las primeras 24 horas y no las frotes.",
+pt:"As extensões de pestanas são aplicadas fio a fio para dar comprimento e densidade. Duram algumas semanas e mantêm-se com preenchimentos; evite molhá-las nas primeiras 24 horas e não as esfregue.",
+en:"Lash extensions are applied one by one to add length and density. They last a few weeks and are kept up with refills; avoid wetting them for the first 24 hours and don't rub them."},
+{x:1,s:[5],k:/(relleno|refill|retoque|preench\w*).*(pesta|lash|cilio)|(pesta|lash|cilio).*(relleno|refill|retoque|preench\w*)/,
+es:"El relleno de pestañas repone las extensiones que se han caído con el crecimiento natural, para mantener el volumen. Lo ideal es hacerlo unos 15 días después del servicio anterior.",
+pt:"O preenchimento de pestanas repõe as extensões que caíram com o crescimento natural, para manter o volume. O ideal é fazê-lo cerca de 15 dias depois do serviço anterior.",
+en:"A lash refill replaces extensions lost through natural growth to keep the volume. It's best done about 15 days after the previous service."},
+{x:1,s:[7],k:/lifting|lash lift/,
+es:"El lifting de pestañas riza y levanta tus pestañas naturales sin añadir extensiones, para una mirada más abierta. Es un tratamiento para pestañas propias; evita mojarlas las primeras 24 horas.",
+pt:"O lifting de pestanas curva e levanta as suas pestanas naturais sem acrescentar extensões, para um olhar mais aberto. É para pestanas próprias; evite molhá-las nas primeiras 24 horas.",
+en:"A lash lift curls and lifts your natural lashes without adding extensions, for a more open look. It's for your own lashes; avoid wetting them for the first 24 hours."},
+{x:1,s:[25],k:/microblad|micropigment/,
+es:"El microblading dibuja la ceja pelo a pelo con pigmento semipermanente. La sesión inicial dura 120 min y la profesional decide después si hace falta un repaso. Si estás embarazada o tienes alguna condición de piel o de salud, consúltalo antes.",
+pt:"O microblading desenha a sobrancelha fio a fio com pigmento semipermanente. A sessão inicial dura 120 min e a profissional decide depois se é preciso um repaso. Se está grávida ou tem alguma condição de pele ou de saúde, consulte antes.",
+en:"Microblading draws brows hair by hair with semi-permanent pigment. The first session takes 120 min and the professional decides afterwards if a touch-up is needed. If you're pregnant or have a skin or health condition, check first."},
+{s:[5,17],k:/relleno|preench|refill|retoque/,
+es:"El relleno es el mantenimiento del servicio: en pestañas repone las extensiones caídas y en uñas de gel rellena la zona que ha crecido. Lo ideal es hacerlo unos 15 días después.",
+pt:"O preenchimento é a manutenção do serviço: nas pestanas repõe as extensões caídas e nas unhas de gel preenche a zona que cresceu. O ideal é fazê-lo cerca de 15 dias depois.",
+en:"A refill is the upkeep of the service: for lashes it replaces lost extensions and for gel nails it fills the new growth. It's best done about 15 days later."},
+{s:[4,5,7],k:/pesta|lash|cilio/,
+es:"Tenemos tres opciones: extensiones (añaden longitud y densidad pelo a pelo), relleno (mantiene las extensiones) y lifting (riza y levanta tus pestañas naturales sin añadir). Si dudas, sube una foto de referencia en el formulario y la profesional te orienta.",
+pt:"Temos três opções: extensões (acrescentam comprimento e densidade fio a fio), preenchimento (mantém as extensões) e lifting (curva e levanta as pestanas naturais sem acrescentar). Se tiver dúvidas, envie uma foto de referência no formulário e a profissional orienta.",
+en:"We offer three options: extensions (add length and density one by one), refill (keeps the extensions) and lift (curls and lifts your natural lashes without adding any). If unsure, add a reference photo in the form and the professional will advise."},
+{s:[0],k:/drenaj|drenagem|linfat|lymph|drainage/,
+es:"El drenaje linfático es un masaje suave y rítmico que estimula la circulación de la linfa y ayuda a reducir la sensación de hinchazón y pesadez. Sus efectos son temporales: funciona mejor con regularidad, bebiendo agua. Si estás embarazada o tienes alguna condición de salud, consulta antes con la profesional.",
+pt:"A drenagem linfática é uma massagem suave e rítmica que estimula a circulação da linfa e ajuda a reduzir a sensação de inchaço e peso. Os efeitos são temporários: funciona melhor com regularidade e bebendo água. Se está grávida ou tem alguma condição de saúde, consulte antes a profissional.",
+en:"Lymphatic drainage is a gentle, rhythmic massage that stimulates lymph circulation and helps ease the feeling of puffiness and heaviness. Effects are temporary: it works best done regularly, with plenty of water. If you're pregnant or have a health condition, check with the professional first."},
+{s:[6],k:/masaj|massag|relax/,
+es:"El masaje relajante busca aliviar la tensión y favorecer el descanso con movimientos suaves. Es un servicio de bienestar, no un tratamiento médico; si tienes una lesión o condición de salud, consúltalo antes.",
+pt:"A massagem relaxante procura aliviar a tensão e favorecer o descanso com movimentos suaves. É um serviço de bem-estar, não um tratamento médico; se tem uma lesão ou condição de saúde, consulte antes.",
+en:"A relaxing massage aims to ease tension and help you unwind with gentle movements. It's a wellness service, not a medical treatment; if you have an injury or health condition, check first."},
+{s:[1],k:/limpieza|limpeza|detox|cleansing|facial|rosto|piel|skin|\bface\b/,
+es:"La limpieza de piel Detox elimina impurezas, células muertas y exceso de grasa, y deja la piel más limpia y preparada para recibir cuidados. Después evita maquillaje pesado unas horas y usa protector solar.",
+pt:"A limpeza de pele Detox remove impurezas, células mortas e excesso de oleosidade, e deixa a pele mais limpa e preparada para receber cuidados. Depois evite maquilhagem pesada algumas horas e use protetor solar.",
+en:"The Detox skin cleanse removes impurities, dead cells and excess oil, leaving skin cleaner and ready for care. Afterwards avoid heavy makeup for a few hours and use sunscreen."},
+{s:[2],k:/dermapen|microneedl|microagu/,
+es:"Dermapen es un tratamiento facial de microagujas que estimula la renovación de la piel; se suele usar para mejorar textura y luminosidad. Puede haber rojez los primeros días: usa protección solar y evita el sol directo. Si estás embarazada o tienes alguna condición de piel o de salud, consulta antes.",
+pt:"O Dermapen é um tratamento facial de microagulhas que estimula a renovação da pele; costuma usar-se para melhorar a textura e a luminosidade. Pode haver vermelhidão nos primeiros dias: use proteção solar e evite o sol direto. Se está grávida ou tem alguma condição de pele ou de saúde, consulte antes.",
+en:"Dermapen is a microneedling facial that stimulates skin renewal; it's commonly used to improve texture and glow. Some redness is possible for the first days: use sunscreen and avoid direct sun. If you're pregnant or have a skin or health condition, check first."},
+{s:[3],k:/radiofrecu|radiofrequ/,
+es:"La radiofrecuencia facial aplica calor controlado para estimular el colágeno y mejorar la firmeza y el aspecto de la piel. Es cómoda y sin recuperación; los resultados llegan de forma progresiva con varias sesiones. Consulta antes si tienes marcapasos, implantes metálicos o estás embarazada.",
+pt:"A radiofrequência facial aplica calor controlado para estimular o colagénio e melhorar a firmeza e o aspeto da pele. É confortável e sem recuperação; os resultados surgem de forma progressiva com várias sessões. Consulte antes se tem pacemaker, implantes metálicos ou está grávida.",
+en:"Facial radiofrequency applies controlled heat to stimulate collagen and improve skin firmness and appearance. It's comfortable with no downtime; results build gradually over several sessions. Check first if you have a pacemaker, metal implants or are pregnant."},
+{s:[8,9,10,11,12,13,14],k:/depil|cera|wax|ingle|axila|pierna|brazo|perna|braco|armpit|\bleg|\barm/,
+es:"Hacemos depilación femenina por zonas o completa. La depilación completa incluye piernas enteras, ingles, axilas y brazos. Para un mejor resultado, evita sol intenso y productos irritantes en las horas previas y posteriores.",
+pt:"Fazemos depilação feminina por zonas ou completa. A depilação completa inclui pernas inteiras, virilhas, axilas e braços. Para um melhor resultado, evite sol intenso e produtos irritantes nas horas antes e depois.",
+en:"We offer women's hair removal by area or full body. The full package includes full legs, bikini, underarms and arms. For best results, avoid strong sun and irritating products in the hours before and after."},
+{s:[15,16,19,20,21],k:/manicur|semipermanente|esmalte|nail|u[nñ]a|unha|pedicur|encarnada|ingrown/,
+es:"La manicure y la pedicura básicas cuidan y embellecen uñas y cutículas. El semipermanente es esmalte de larga duración que se seca con lámpara. La pedicura con uña encarnada trata esa zona con cuidado; si hay dolor intenso, inflamación o infección, consulta antes a un profesional sanitario.",
+pt:"A manicure e a pedicure básicas cuidam e embelezam unhas e cutículas. O semipermanente é um verniz de longa duração que seca com lâmpada. A pedicure com unha encravada trata essa zona com cuidado; se houver dor intensa, inflamação ou infeção, consulte antes um profissional de saúde.",
+en:"Basic manicures and pedicures care for nails and cuticles. Semi-permanent is long-lasting polish cured under a lamp. The ingrown-nail pedicure treats that area carefully; with severe pain, swelling or infection, see a health professional first."},
+{s:[22,23,24],k:/ceja|sobrancelh|brow|laminado|hilo|pinza|thread|tweez/,
+es:"Las cejas con hilo o con pinza dan una forma limpia y definida. El laminado peina los pelos hacia arriba para un efecto más lleno y uniforme, de forma temporal.",
+pt:"As sobrancelhas com linha ou pinça dão uma forma limpa e definida. A laminação penteia os pelos para cima para um efeito mais cheio e uniforme, de forma temporária.",
+en:"Threaded or tweezed brows give a clean, defined shape. Brow lamination brushes hairs upward for a fuller, even look, temporarily."},
+{k:/bruna|lutty|profesionales|equipo|equipa|\bteam|who does|quien hace|quem faz/,
+es:"Bruna se ocupa de tratamientos faciales, pestañas, masaje y depilación femenina. Lutty, de uñas y cejas (incluido el microblading).",
+pt:"A Bruna trata de tratamentos faciais, pestanas, massagem e depilação feminina. A Lutty trata de unhas e sobrancelhas (incluindo microblading).",
+en:"Bruna handles facial treatments, lashes, massage and women's waxing. Lutty handles nails and brows (including microblading)."}
+];
+const RB=/marcar|reserv|cita|book|appoint|agendar|disponib|availab/;
+function local(q){q=norm(q);
+if(q.length<16&&/^(hola|hi\b|hello|ola|buenas|buenos|bom dia|boa tarde)/.test(q))return t("hi");
+if(/foto|photo|imagen|image|referencia|reference/.test(q))return u("Puedes subir una foto de referencia en el formulario de reserva. La profesional la verá y te dirá si podemos conseguir ese resultado.","Pode enviar uma foto de referência no formulário de reserva. A profissional verá e dirá se conseguimos esse resultado.","You can add a reference photo in the booking form. The professional will review it and tell you if we can achieve that result.");
+if(/horari|opening|\bopen|hours|abren|abre\b|cierra|domingo|sabado|sunday|saturday|funcionam/.test(q))return t("hrs");
+if(/depos|sinal|bizum|transfer|pago|pagar|cancel|cambiar|cambio|alterar|remarcar|resched|48/.test(q))return t("pol_s");
+const h=[];for(const e of KB){if(e.k.test(q)){h.push(e);if(e.x||h.length===2)break}}
+if(h.length){let a=h.map(e=>e[L]).join("\n\n");const ids=[...new Set(h.flatMap(e=>e.s||[]))];
+if(ids.length)a+="\n\n"+ids.map(i=>`${S[i].n}: ${S[i].p} € · ${S[i].m} min`).join("\n");
+if(RB.test(q))a+="\n\n"+t("bookr");return a}
+if(RB.test(q))return t("bookr");
+if(/gandia|direccion|endereco|ubicacion|donde|onde|where|address|location/.test(q))return u("Estamos en Gandia (España). Para la dirección exacta, contacta con el 746 07 18 18.","Estamos em Gandia (Espanha). Para a morada exata, contacte o 746 07 18 18.","We're in Gandia (Spain). For the exact address, contact 746 07 18 18.");
+return ""}
+$("cf").onsubmit=async e=>{e.preventDefault();const v=$("ci").value.trim();if(!v||AIB)return;say(v,1);$("ci").value="";
+if(DISC.test(norm(v))){say(u("En caso de consultas sobre paquetes, descuentos u ofertas, contacta con el 746 07 18 18.","Em caso de dúvidas sobre pacotes, descontos ou ofertas, contacte o 746 07 18 18.","For questions about packages, discounts or offers, please contact 746 07 18 18."));return}
+const a=local(v);if(a){say(a);HI.push({r:"u",t:v},{r:"a",t:a});return}
+HI.push({r:"u",t:v});AIB=true;
+const d=document.createElement("div");d.textContent="…";$("log").append(d);$("log").scrollTop=1e9;
+let out="";
+try{const sm=window.claude&&await window.claude.use("sample");
+if(sm){const tx=HI.slice(-8).map(m=>(m.r==="u"?"Clienta: ":"Asistente: ")+m.t).join("\n");
+const r=await sm(INSTR()+"\n\nConversación:\n"+tx+"\nAsistente:",{cache:false,onText:x=>{d.textContent=x.text||"…"}});out=(r.text||"").trim()}}catch(err){out=""}
+if(!out)out=u("No tengo esa información. Para más detalles contacta con el 746 07 18 18.","Não tenho essa informação. Para mais detalhes contacte o 746 07 18 18.","I don't have that information. For more details contact 746 07 18 18.");
+d.textContent=out;HI.push({r:"a",t:out});AIB=false;$("log").scrollTop=1e9};
+
+render();gate();
+</script>
+</body>
+</html>
