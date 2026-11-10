@@ -1,5 +1,5 @@
 /* Aura · backend (Vercel Function: api/db.js). Só WhatsApp (WhatsApp Business Cloud API da Meta).
-   O email serve só para identificar a conta no login (opcional). Nenhuma mensagem sai por email.
+   O email serve só para identificar a conta no login. Nenhuma mensagem sai por email.
    Variáveis de ambiente:
    - KV_REST_API_URL / KV_REST_API_TOKEN ........ Upstash Redis (ya configuradas)
    - WA_PHONE_ID, WA_TOKEN ...................... WhatsApp Business Platform (Cloud API de Meta)
@@ -30,7 +30,7 @@ const MSG = {
   code: { es: "Tu código de Aura: {0} (válido 10 minutos). No lo compartas.", pt: "O seu código da Aura: {0} (válido 10 minutos). Não o partilhe.", en: "Your Aura code: {0} (valid 10 minutes). Don't share it." },
   cancel: { es: "Hola {0}, lamentamos informarte que tu cita de {1} del {2} a las {3} ha sido cancelada por un imprevisto. Puedes reservar otra fecha en {4}", pt: "Olá {0}, lamentamos informar que a sua marcação de {1} em {2} às {3} foi cancelada por um imprevisto. Pode remarcar em {4}", en: "Hi {0}, we're sorry to let you know your {1} appointment on {2} at {3} was cancelled due to an unforeseen issue. Rebook at {4}" },
   remind: { es: "Hola {0}, te recordamos tu cita de {1} el {2} a las {3}. ¡Te esperamos! {4}", pt: "Olá {0}, lembramos a sua marcação de {1} em {2} às {3}. Até já! {4}", en: "Hi {0}, a reminder of your {1} appointment on {2} at {3}. See you soon! {4}" },
-  refill: { es: "Hola {0}, ya han pasado 15 días desde tu {1}. Es buen momento para el relleno. Reserva aquí: {2}", pt: "Olá {0}, ya passaram 15 dias desde a sua {1}. É boa altura para o retoque. Marque aqui: {2}", en: "Hi {0}, it's been 15 days since your {1}. Good time for a refill. Book here: {2}" },
+  refill: { es: "Hola {0}, ya han pasado 15 días desde tu {1}. Es buen momento para el relleno. Reserva aquí: {2}", pt: "Olá {0}, já passaram 15 dias desde a sua {1}. É boa altura para o retoque. Marque aqui: {2}", en: "Hi {0}, it's been 15 days since your {1}. Good time for a refill. Book here: {2}" },
   newBk: "MARCAÇÃO: O(A) Cliente {0} quer uma cita para {1} às {2}, Você quer aprovar a cita? {3}",
   staffCancel: "CANCELAMENTO: a cliente {0} cancelou a cita de {1} às {2}."
 };
@@ -119,124 +119,73 @@ async function reminders() {
   return { ok: 1, sent };
 }
 
-// Helper para buscar usuário por email ou por número de telefone
-const cleanKey = str => String(str || "").trim().toLowerCase();
-const isEmail = str => str.includes("@");
-
-async function findUser(ident) {
-  const k = cleanKey(ident);
-  if (!k) return null;
-  let uid = await rc("GET", isEmail(k) ? "u:email:" + k : "u:tel:" + dg(k));
-  if (!uid && !isEmail(k)) uid = await rc("GET", "u:email:" + k); // fallback
-  if (!uid) return null;
-  const raw = await rc("GET", "u:id:" + uid);
-  return raw ? JSON.parse(raw) : null;
-}
-
 async function run(b, tok) {
-  const op = b.op;
-  const pub = u => ({ id: u.id, email: u.email || u.tel, name: u.name, tel: u.tel, lang: LG(u.lang), staff: STAFF[u.email] || null });
-  const session = async uid => { const t = crypto.randomBytes(24).toString("hex"); await rc("SET", "s:" + t, uid, "EX", 2592000); return t; };
+  const op = b.op, em = String(b.email || "").trim().toLowerCase();
+  const pub = (e, u) => ({ email: e, name: u.name, tel: u.tel, lang: LG(u.lang), staff: STAFF[e] || null });
+  const session = async e => { const t = crypto.randomBytes(24).toString("hex"); await rc("SET", "s:" + t, e, "EX", 2592000); return t; };
+  const getU = async e => { const r = await rc("GET", "u:" + e); return r ? JSON.parse(r) : null; };
 
   if (op === "register") {
-    const ident = cleanKey(b.identifier || b.email || b.tel || "");
-    const pw = String(b.pw || "");
-    const name = String(b.name || "").trim().slice(0, 80);
-    if (!ident || pw.length < 8 || !name) return { err: "input" };
-
-    const existing = await findUser(ident);
-    if (existing) return { err: "exists" };
-
-    const uid = newId();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em) || String(b.pw || "").length < 8 || !b.name || dg(b.tel).length < 11) return { err: "input" };
     const salt = crypto.randomBytes(16).toString("hex");
-    const isEm = isEmail(ident);
-    const telNum = isEm ? dg(b.tel || "") : dg(ident);
-    const emailAddr = isEm ? ident : cleanKey(b.email || "");
-
-    const u = {
-      id: uid,
-      salt,
-      h: hp(pw, salt),
-      name,
-      tel: telNum || ident,
-      email: emailAddr,
-      lang: LG(b.lang)
-    };
-
-    await rc("SET", "u:id:" + uid, JSON.stringify(u));
-    if (telNum) await rc("SET", "u:tel:" + telNum, uid);
-    if (emailAddr) await rc("SET", "u:email:" + emailAddr, uid);
-    if (!isEm) await rc("SET", "u:email:" + ident, uid); // mapear identificador direto
-
-    return { tok: await session(uid), me: pub(u) };
+    const u = { salt, h: hp(b.pw, salt), name: String(b.name).trim().slice(0, 80), tel: String(b.tel).trim().slice(0, 30), lang: LG(b.lang) };
+    if ((await rc("SET", "u:" + em, JSON.stringify(u), "NX")) !== "OK") return { err: "exists" };
+    return { tok: await session(em), me: pub(em, u) };
   }
-
   if (op === "login") {
-    const ident = cleanKey(b.identifier || b.email || b.tel || "");
-    const n = await rc("INCR", "f:" + ident); if (n === 1) await rc("EXPIRE", "f:" + ident, 900); if (n > 10) return { err: "bad" };
-    const u = await findUser(ident);
+    const n = await rc("INCR", "f:" + em); if (n === 1) await rc("EXPIRE", "f:" + em, 900); if (n > 10) return { err: "bad" };
+    const u = await getU(em);
     if (!u || !crypto.timingSafeEqual(Buffer.from(hp(String(b.pw || ""), u.salt)), Buffer.from(u.h))) return { err: "bad" };
-    await rc("DEL", "f:" + ident);
-    return { tok: await session(u.id), me: pub(u) };
+    await rc("DEL", "f:" + em);
+    return { tok: await session(em), me: pub(em, u) };
   }
-
   if (op === "forgot") {
     if (!WA_ID || !WA_TOKEN) return { err: "nomail" };
-    const telVal = cleanKey(b.tel || b.identifier || "");
-    const n = await rc("INCR", "fg:" + telVal); if (n === 1) await rc("EXPIRE", "fg:" + telVal, 3600); if (n > 5) return { ok: 1 };
-    const u = await findUser(telVal);
+    const n = await rc("INCR", "fg:" + em); if (n === 1) await rc("EXPIRE", "fg:" + em, 3600); if (n > 5) return { ok: 1 };
+    const u = await getU(em);
     if (u) {
       const code = String(100000 + crypto.randomInt(900000));
-      await rc("SET", "c:" + u.id, JSON.stringify({ code, tries: 0 }), "EX", 600);
+      await rc("SET", "c:" + em, JSON.stringify({ code, tries: 0 }), "EX", 600);
       await wa(u.tel, "CODE", LG(u.lang), [code], fmt(MSG.code[LG(u.lang)], code));
     }
     return { ok: 1 };
   }
-
   if (op === "reset") {
-    const telVal = cleanKey(b.tel || b.identifier || "");
-    const u = await findUser(telVal);
-    const r = u ? await rc("GET", "c:" + u.id) : null;
-    const c = r ? JSON.parse(r) : null;
+    const r = await rc("GET", "c:" + em), c = r ? JSON.parse(r) : null, u = await getU(em);
     if (!c || !u || c.tries >= 5) return { err: "code" };
-    if (String(b.code || "").trim() !== c.code) { c.tries++; await rc("SET", "c:" + u.id, JSON.stringify(c), "EX", 600); return { err: "code" }; }
-    if (b.pw) { if (String(b.pw).length < 8) return { err: "input" }; u.salt = crypto.randomBytes(16).toString("hex"); u.h = hp(b.pw, u.salt); await rc("SET", "u:id:" + u.id, JSON.stringify(u)); }
-    await rc("DEL", "c:" + u.id);
-    return { tok: await session(u.id), me: pub(u) };
+    if (String(b.code || "").trim() !== c.code) { c.tries++; await rc("SET", "c:" + em, JSON.stringify(c), "EX", 600); return { err: "code" }; }
+    if (b.pw) { if (String(b.pw).length < 8) return { err: "input" }; u.salt = crypto.randomBytes(16).toString("hex"); u.h = hp(b.pw, u.salt); await rc("SET", "u:" + em, JSON.stringify(u)); }
+    await rc("DEL", "c:" + em);
+    return { tok: await session(em), me: pub(em, u) };
   }
 
-  const userId = tok && (await rc("GET", "s:" + tok));
-  const user = userId && (await findUser(userId));
+  const me = tok && (await rc("GET", "s:" + tok)), user = me && (await getU(me));
   if (!user) return { err: "auth" };
-
-  const meEmail = user.email || user.tel;
-  const mine = STAFF[user.email] || [];
+  const mine = STAFF[me] || [];
   if (op === "logout") { await rc("DEL", "s:" + tok); return { ok: 1 }; }
 
   const bks = await all("bk"), bls = await all("bl");
   if (op === "list") {
-    return { me: pub(user),
-      bookings: bks.filter(x => mine.includes(x.p) || x.userId === user.id || x.email === meEmail),
+    return { me: pub(me, user),
+      bookings: bks.filter(x => mine.includes(x.p) || x.email === me),
       busy: bks.filter(live).map(x => ({ p: x.p, d: x.d, m: x.m, dur: x.dur })),
       blocks: bls.map(x => mine.includes(x.p) ? x : { id: x.id, p: x.p, d: x.d, from: x.from, to: x.to }) };
   }
-
   if (op === "book" || op === "sbook") {
     const staff = op === "sbook";
     if (!okSlot(b) || (staff && !mine.includes(b.p))) return { err: staff ? "forbidden" : "input" };
     const e = slotErr(b.p, b.d, b.m, b.dur, bks, bls); if (e) return { err: e };
     const bk = { id: newId(), i: b.i, p: b.p, d: b.d, m: b.m, dur: b.dur,
       n: String(staff ? b.n : b.n || user.name).slice(0, 80), tel: String(staff ? b.tel : b.tel || user.tel).slice(0, 30),
-      userId: user.id, email: staff ? "" : meEmail, lang: staff ? "es" : LG(b.lang || user.lang),
+      email: staff ? "" : me, lang: staff ? "es" : LG(b.lang || user.lang),
       src: staff ? String(b.src || "presencial").slice(0, 20) : "online", st: staff ? "paid" : "pending" };
     await rc("HSET", "bk", bk.id, JSON.stringify(bk));
     if (!staff) await toStaff(bk.p, "NEW", [bk.n, fdate(bk.d), hm(bk.m), SITE], fmt(MSG.newBk, bk.n, fdate(bk.d), hm(bk.m), SITE));
     return { id: bk.id };
   }
-
   if (op === "act") {
     const r = await rc("HGET", "bk", String(b.id)), bk = r ? JSON.parse(r) : null; if (!bk) return { err: "forbidden" };
-    const isS = mine.includes(bk.p), isC = bk.userId === user.id || bk.email === meEmail, a = b.a;
+    const isS = mine.includes(bk.p), isC = bk.email === me, a = b.a;
     const ok = isS ? ((a === "ap" || a === "rj") && bk.st === "pending") || (a === "pd" && bk.st === "approved") || (a === "cn" && live(bk))
                    : isC && a === "cn" && live(bk);
     if (!ok) return { err: "forbidden" };
@@ -256,19 +205,16 @@ async function run(b, tok) {
     await rc("HSET", "bk", bk.id, JSON.stringify(bk));
     return { ok: 1, sent };
   }
-
   if (op === "block") {
     if (!mine.includes(b.p) || !/^\d{4}-\d{2}-\d{2}$/.test(b.d) || !(b.to > b.from)) return { err: "forbidden" };
     const x = { id: newId(), p: b.p, d: b.d, from: +b.from, to: +b.to, why: String(b.why || "").slice(0, 80) };
     await rc("HSET", "bl", x.id, JSON.stringify(x)); return { id: x.id };
   }
-
   if (op === "unblock") {
     const r = await rc("HGET", "bl", String(b.id)), x = r ? JSON.parse(r) : null;
     if (!x || !mine.includes(x.p)) return { err: "forbidden" };
     await rc("HDEL", "bl", x.id); return { ok: 1 };
   }
-
   return { err: "input" };
 }
 
