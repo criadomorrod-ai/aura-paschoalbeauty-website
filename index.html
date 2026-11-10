@@ -307,6 +307,7 @@ el.innerHTML=h}
 /* --- Ligação ao render --- */
 const esc=x=>String(x==null?"":x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
 document.head.insertAdjacentHTML("beforeend","<style>#appr{max-width:960px;margin:0 auto;padding:48px 20px;border-top:1px solid var(--line)}#appr .btn{padding:8px 16px;font-size:14px;margin:10px 8px 0 0}#appr .tag{margin-left:8px}</style>");
+document.head.insertAdjacentHTML("beforeend","<style>#cal .calh{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0}#cal .calh b{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400}#cal .cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;max-width:560px}#cal .cw{font-size:12px;color:var(--mut);text-align:center;text-transform:capitalize}#cal .cgrid>span{min-height:44px}#cal .cd{position:relative;min-height:44px;background:var(--bg);border:1px solid var(--line);color:var(--ink);font:inherit;font-size:15px;cursor:pointer;border-radius:2px}#cal .cd[aria-pressed=true]{background:var(--goldbg);color:var(--on);border-color:var(--goldbg)}#cal .cd.td{border-color:var(--gold)}#cal .cd i{position:absolute;right:4px;bottom:3px;font-style:normal;font-size:11px;color:var(--gold)}#cal .cd[aria-pressed=true] i{color:var(--on)}</style>");
 function rLoc(){$("loch").textContent=u("Localización","Localização","Location");$("locl").textContent=u("Localización","Localização","Location")}
 function rAppr(){const pr=ME&&STAFF[ME];let el=$("appr");
 if(!pr){if(el)el.style.display="none";return}
@@ -316,7 +317,30 @@ el.style.display="";
 const ps=BK.filter(b=>b.st==="pending"&&pr.includes(b.p)).sort((a,b)=>(a.d+hm(a.m))<(b.d+hm(b.m))?-1:1);
 el.innerHTML=`<h2>${u("Aprobación de citas","Aprovação de marcações","Booking approvals")} (${ps.length})</h2><p class="sub">${pr.length>1?u("Citas pendientes de Bruna y Lutty.","Marcações pendentes da Bruna e da Lutty.","Pending bookings for Bruna and Lutty."):u("Citas pendientes de uñas y cejas (Lutty).","Marcações pendentes de unhas e sobrancelhas (Lutty).","Pending nails and brows bookings (Lutty).")}</p>`+
 (ps.length?ps.map(b=>{const sv=S[b.i];return `<div class="card" style="margin-bottom:12px"><span class="tag">${PN[b.p]}</span><b>${esc(b.n)}</b> ${u("marcó una cita para el","marcou uma cita para o","booked an appointment for")} <b>${b.d}</b> ${u("a las","às","at")} <b>${hm(b.m)}</b>: ${sv.n}.<br><small style="color:var(--mut)">${u("Tratamiento","Tratamento","Treatment")}: ${sv.n} · ${b.dur} ${t("min")} · ${sv.p} € · ${u("Depósito","Sinal","Deposit")}: ${dep(sv)} €<br>${esc(b.tel)}${b.email?" · "+esc(b.email):""} · ${u("contacto","contacto","contact")}: ${b.pref==="email"?"Email":"WhatsApp"}</small><br><button class="btn" data-a="ap" data-i="${b.id}">${u("Aprobar cita","Aprovar cita","Approve booking")}</button><button class="btn ghost" data-a="rj" data-i="${b.id}">${u("No aprobar cita","Não aprovar cita","Don't approve")}</button></div>`}).join(""):`<p class="sub">${u("No hay citas pendientes.","Não há marcações pendentes.","No pending bookings.")}</p>`)}
-function rAll(){slots();list();rStaff();rAppr()}
+let CAL=null;
+function rCal(){const el=$("appr"),pr=ME&&STAFF[ME];if(!el||!pr||el.style.display==="none")return;
+const old=$("cal");if(old)old.remove();
+const d0=new Date(),pad=n=>String(n).padStart(2,"0"),key=(y,m,dd)=>y+"-"+pad(m+1)+"-"+pad(dd);
+const today=key(d0.getFullYear(),d0.getMonth(),d0.getDate());
+if(!CAL)CAL={y:d0.getFullYear(),m:d0.getMonth(),sel:today};
+const ok=BK.filter(b=>pr.includes(b.p)&&(b.st==="approved"||b.st==="paid"));
+const cnt={};ok.forEach(b=>cnt[b.d]=(cnt[b.d]||0)+1);
+const loc=L==="pt"?"pt-PT":L==="es"?"es-ES":"en-GB";
+const first=new Date(CAL.y,CAL.m,1),days=new Date(CAL.y,CAL.m+1,0).getDate(),lead=(first.getDay()+6)%7;
+const mname=first.toLocaleDateString(loc,{month:"long",year:"numeric"});
+const wd=[];for(let i=0;i<7;i++)wd.push(new Date(2024,0,1+i).toLocaleDateString(loc,{weekday:"short"}));
+let g="";for(let i=0;i<lead;i++)g+="<span></span>";
+for(let dd=1;dd<=days;dd++){const k=key(CAL.y,CAL.m,dd),c=cnt[k]||0;
+g+=`<button type="button" data-cal="${k}" aria-pressed="${k===CAL.sel}" class="cd${k===today?" td":""}">${dd}${c?`<i>${c}</i>`:""}</button>`}
+const dayB=ok.filter(b=>b.d===CAL.sel).sort((a,b)=>a.m-b.m);
+const list=dayB.length?dayB.map(b=>{const sv=S[b.i];return `<div class="card" style="margin-bottom:10px"><span class="tag">${stl(b.st)}</span><b>${hm(b.m)}</b> · ${sv.n} · ${b.dur} ${t("min")}<br>${esc(b.n)} · ${PN[b.p]} · ${esc(b.tel)}</div>`}).join(""):`<p class="sub">${u("No hay citas aprobadas este día.","Sem marcações aprovadas neste dia.","No approved bookings this day.")}</p>`;
+const div=document.createElement("div");div.id="cal";
+div.innerHTML=`<h2 style="margin-top:48px">${u("Calendario de citas","Calendário de marcações","Bookings calendar")}</h2><p class="sub">${u("Solo se muestran las citas aprobadas.","Só são mostradas as marcações aprovadas.","Only approved bookings are shown.")}</p><div class="calh"><button type="button" class="btn ghost" data-nav="-1">‹</button><b style="text-transform:capitalize">${mname}</b><button type="button" class="btn ghost" data-nav="1">›</button></div><div class="cgrid">${wd.map(x=>`<span class="cw">${x}</span>`).join("")}${g}</div><h3 style="font-size:26px;margin:24px 0 12px">${CAL.sel}</h3>${list}`;
+div.onclick=e=>{const n=e.target.closest("[data-nav]"),c=e.target.closest("[data-cal]");
+if(n){let m=CAL.m+ +n.dataset.nav,y=CAL.y;if(m<0){m=11;y--}if(m>11){m=0;y++}CAL.y=y;CAL.m=m;rCal();return}
+if(c){CAL.sel=c.dataset.cal;rCal()}};
+el.appendChild(div)}
+function rAll(){slots();list();rStaff();rAppr();rCal()}
 function r2(){rLoc();rAuth();$("lo").textContent=u("Salir","Sair","Log out");rBp();rAll()}
 const r0=render;render=function(){r0();r2()};
 
